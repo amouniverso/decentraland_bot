@@ -2,10 +2,10 @@ import numpy as np
 import win32gui, win32ui, win32con
 import time
 
-DESKTOP_SCALE = 2.25
+DESKTOP_SCALE = 1
+
 
 class WindowCapture:
-
     # properties
     w = 0
     h = 0
@@ -85,6 +85,7 @@ class WindowCapture:
         def winEnumHandler(hwnd, ctx):
             if win32gui.IsWindowVisible(hwnd):
                 print(hex(hwnd), win32gui.GetWindowText(hwnd))
+
         win32gui.EnumWindows(winEnumHandler, None)
 
     # translate a pixel position on a screenshot image to a pixel position on the screen.
