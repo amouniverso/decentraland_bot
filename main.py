@@ -4,6 +4,7 @@ import win32api, win32con
 from windowcapture import WindowCapture, DESKTOP_SCALE
 import pyautogui
 import sys
+import random
 sys.path.append('yolov7-main')
 import detect as yolov7
 
@@ -83,10 +84,10 @@ while True:
             pyautogui.keyDown('s')
             # move_mouse(2500, 0, 0.5)
     else:
-        if time() - rest_time > 3:
+        if time() - rest_time > 1:
             print('RESET')
             pyautogui.click()
-            move_mouse(1000, -100, 0.1)
+            move_mouse(1000, random.randrange(-150, 150, 50), 0.05)
             rest_time = time()
 
     # debug the loop rate

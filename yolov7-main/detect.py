@@ -110,12 +110,7 @@ class Detector:
 
                 # Print time (inference + NMS)
                 print(f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
-
                 return im0, det
-                # # Stream results
-                # if self.view_img:
-                #     cv2.imshow(str(p), im0)
-                #     cv2.waitKey(1)  # 1 millisecond
 
         print(f'Done. ({time.time() - t0:.3f}s)')
 
