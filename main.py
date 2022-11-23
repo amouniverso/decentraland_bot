@@ -8,6 +8,7 @@ import random
 sys.path.append('yolov7-main')
 import detect as yolov7
 import os
+import subprocess
 
 def rel_mouse_event(x, y):
     win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
@@ -94,10 +95,11 @@ def goto_wondermine(gameScreen):
     sleep(5)
     pyautogui.keyUp('w')
     pyautogui.click()
+    pyautogui.scroll(10)
 
 def init_game():
     os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
-    print('Opened.')
+    print('app opened.')
     sleep(5)
     menuScreen = WindowCapture('Decentraland BETA 0.1.44')
     click_wallet(menuScreen)
@@ -109,15 +111,28 @@ def init_game():
     set_fps(gameScreen)
     gameScreen = WindowCapture('Decentraland')
     goto_wondermine(gameScreen)
+    print('wondermine initialized.')
     return gameScreen
 
 
-print('Started.')
+print('bot started.')
 wincap = init_game()
 detector = yolov7.Detector('yolov7-main/yolov7_custom300epochs.pt', 0.45, 640, True, True)
 loop_time = time()
 rest_time = time()
+kill_time = time()
+restart_time = 0
 while True:
+    if (time() - restart_time) > 60 * 60 * 24 and kill_time == 0:
+        wincap = init_game()
+        restart_time = 0
+        kill_time = time()
+        print('app restarted.')
+    if (time() - kill_time) > 60 * 60 * 2 and restart_time == 0:
+        subprocess.call("TASKKILL /F /IM Decentraland.exe", shell=True)
+        kill_time = 0
+        restart_time = time()
+        print('app closed.')
     print('rest time', time() - rest_time)
     windowCenterY = wincap.h / 2
     windowCenterX = wincap.w / 2
@@ -138,8 +153,8 @@ while True:
             dBoxCenterX = c1x + ((c2x - c1x) / 2)
             dBoxCenterY = c1y + ((c2y - c1y) / 2)
             print('Detection box center, xy: ', dBoxCenterX, dBoxCenterY)
-    imS = cv.resize(img, (int(wincap.w / 1.5), int(wincap.h / 1.5)))
-    cv.imshow('Computer Vision', imS)
+    # imS = cv.resize(img, (int(wincap.w / 1.5), int(wincap.h / 1.5)))
+    # cv.imshow('Computer Vision', imS)
     # cv.waitKey(1)  # 1 millisecond
 
     if dBoxCenterY is not None and dBoxCenterX is not None:
