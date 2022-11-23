@@ -7,7 +7,7 @@ import sys
 import random
 sys.path.append('yolov7-main')
 import detect as yolov7
-
+import os
 
 def rel_mouse_event(x, y):
     win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
@@ -38,11 +38,84 @@ def moveChar():
     sleep(1)
     print('char: rest.')
 
-loop_time = time()
-print('Started.')
-detector = yolov7.Detector('yolov7-main/yolov7_custom300epochs.pt', 0.45, 640, True, True)
-wincap = WindowCapture('Decentraland')
+def click_wallet(menuScreen):
+    walletX = menuScreen.left + ((menuScreen.right - menuScreen.left) / 3)
+    walletY = menuScreen.top + ((menuScreen.bot - menuScreen.top) / 3)
+    print(walletX, walletY)
+    pyautogui.click(walletX, walletY + 200)
+    sleep(1)
+    pyautogui.click(walletX, walletY + 200)
+    sleep(1)
 
+
+def click_profile(gameScreen):
+    pyautogui.press('p')
+    sleep(1)
+
+def click_graphics(gameScreen):
+    pyautogui.click(gameScreen.left + 100, gameScreen.top + 400)
+    sleep(2)
+
+def select_resolution(gameScreen):
+    pyautogui.click(gameScreen.left + 1400, gameScreen.top + 360)
+    sleep(1)
+    pyautogui.click(gameScreen.left + 1400, gameScreen.top + 520)
+    sleep(2)
+    pyautogui.click(gameScreen.left + 1500, gameScreen.top + 370)
+    sleep(1)
+    pyautogui.click(gameScreen.left + 1500, gameScreen.top + 610)
+    sleep(1)
+
+def set_fps(gameScreen):
+    pyautogui.click(gameScreen.left + 1000, gameScreen.top + 490)
+    sleep(1)
+    pyautogui.click(gameScreen.left + 1000, gameScreen.top + 640)
+    sleep(1)
+    pyautogui.press('p')
+
+def goto_wondermine(gameScreen):
+    pyautogui.press('m')
+    sleep(1)
+    pyautogui.press('p')
+    sleep(1)
+    pyautogui.press('m')
+    sleep(1)
+    pyautogui.drag(0, 800, 1, button='left')
+    pyautogui.move(0, -800)
+    pyautogui.drag(0, 800, 1, button='left')
+    sleep(1)
+    pyautogui.moveTo(gameScreen.left + 280, gameScreen.top + 520)
+    pyautogui.click()
+    sleep(1)
+    pyautogui.moveTo(gameScreen.left + 400, gameScreen.top + 1000)
+    pyautogui.click()
+    sleep(20)
+    pyautogui.keyDown('w')
+    sleep(5)
+    pyautogui.keyUp('w')
+    pyautogui.click()
+
+def init_game():
+    os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
+    print('Opened.')
+    sleep(5)
+    menuScreen = WindowCapture('Decentraland BETA 0.1.44')
+    click_wallet(menuScreen)
+    sleep(40)
+    gameScreen = WindowCapture('Decentraland')
+    click_profile(gameScreen)
+    click_graphics(gameScreen)
+    select_resolution(gameScreen)
+    set_fps(gameScreen)
+    gameScreen = WindowCapture('Decentraland')
+    goto_wondermine(gameScreen)
+    return gameScreen
+
+
+print('Started.')
+wincap = init_game()
+detector = yolov7.Detector('yolov7-main/yolov7_custom300epochs.pt', 0.45, 640, True, True)
+loop_time = time()
 rest_time = time()
 while True:
     print('rest time', time() - rest_time)
@@ -81,13 +154,15 @@ while True:
         else:
             pyautogui.keyUp('w')
             pyautogui.click()
+            pyautogui.click()
             pyautogui.keyDown('s')
             # move_mouse(2500, 0, 0.5)
     else:
         if time() - rest_time > 1:
             print('RESET')
             pyautogui.click()
-            move_mouse(1000, random.randrange(-150, 150, 50), 0.05)
+            pyautogui.click()
+            move_mouse(1000, random.randrange(-150, 150, 50), 0.5)
             rest_time = time()
 
     # debug the loop rate
@@ -96,5 +171,4 @@ while True:
     if cv.waitKey(1) == ord('q'):
        cv.destroyAllWindows()
        break
-    # sleep(1)
 print('Done.')
