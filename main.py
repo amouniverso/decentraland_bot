@@ -133,57 +133,56 @@ while True:
         kill_time = 0
         restart_time = time()
         print('app closed.')
-    print('rest time', time() - rest_time)
-    windowCenterY = wincap.h / 2
-    windowCenterX = wincap.w / 2
-    img, det = detector.detect(wincap.get_screenshot())
-    pyautogui.keyUp('w')
-    pyautogui.keyUp('s')
+    if restart_time == 0:
+        print('rest time', time() - rest_time)
+        windowCenterY = wincap.h / 2
+        windowCenterX = wincap.w / 2
+        img, det = detector.detect(wincap.get_screenshot())
+        pyautogui.keyUp('w')
+        pyautogui.keyUp('s')
 
-    dBoxCenterX = None
-    dBoxCenterY = None
-    c1 = None
-    c2 = None
-    if len(det):
-        for *xyxy, conf, cls in reversed(det):
-            c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
-            print('Detection box: ', c1, c2)
-            c1x, c1y = c1
-            c2x, c2y = c2
-            dBoxCenterX = c1x + ((c2x - c1x) / 2)
-            dBoxCenterY = c1y + ((c2y - c1y) / 2)
-            print('Detection box center, xy: ', dBoxCenterX, dBoxCenterY)
-    # imS = cv.resize(img, (int(wincap.w / 1.5), int(wincap.h / 1.5)))
-    # cv.imshow('Computer Vision', imS)
-    # cv.waitKey(1)  # 1 millisecond
+        dBoxCenterX = None
+        dBoxCenterY = None
+        c1 = None
+        c2 = None
+        if len(det):
+            for *xyxy, conf, cls in reversed(det):
+                c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
+                print('Detection box: ', c1, c2)
+                c1x, c1y = c1
+                c2x, c2y = c2
+                dBoxCenterX = c1x + ((c2x - c1x) / 2)
+                dBoxCenterY = c1y + ((c2y - c1y) / 2)
+                print('Detection box center, xy: ', dBoxCenterX, dBoxCenterY)
+        # imS = cv.resize(img, (int(wincap.w / 1.5), int(wincap.h / 1.5)))
+        # cv.imshow('Computer Vision', imS)
+        # cv.waitKey(1)  # 1 millisecond
 
-    if dBoxCenterY is not None and dBoxCenterX is not None:
-        rest_time = time()
-        diffX = windowCenterX - dBoxCenterX
-        diffY = windowCenterY - dBoxCenterY
-        print('DIFF, xy:', int(diffX), int(diffY))
-        print('c2[0] - c1[0]', c2[0] - c1[0])
-        move_mouse(int(-diffX), int(-diffY + 220), 0.1)
-        if c2[0] - c1[0] < 600:
-            pyautogui.keyDown('w')
-        else:
-            pyautogui.keyUp('w')
-            pyautogui.click()
-            pyautogui.click()
-            pyautogui.keyDown('s')
-            # move_mouse(2500, 0, 0.5)
-    else:
-        if time() - rest_time > 1:
-            print('RESET')
-            pyautogui.click()
-            pyautogui.click()
-            move_mouse(1000, random.randrange(-150, 150, 50), 0.5)
+        if dBoxCenterY is not None and dBoxCenterX is not None:
             rest_time = time()
+            diffX = windowCenterX - dBoxCenterX
+            diffY = windowCenterY - dBoxCenterY
+            print('DIFF, xy:', int(diffX), int(diffY))
+            print('c2[0] - c1[0]', c2[0] - c1[0])
+            move_mouse(int(-diffX), int(-diffY + 220), 0.1)
+            if c2[0] - c1[0] < 600:
+                pyautogui.keyDown('w')
+            else:
+                pyautogui.keyUp('w')
+                pyautogui.click()
+                pyautogui.click()
+                pyautogui.keyDown('s')
+                # move_mouse(2500, 0, 0.5)
+        else:
+            if time() - rest_time > 1:
+                print('RESET')
+                pyautogui.click()
+                pyautogui.click()
+                move_mouse(1000, random.randrange(-150, 150, 50), 0.5)
+                rest_time = time()
 
-    # debug the loop rate
-    print('FPS {}'.format(int(1 / (time() - loop_time))))
-    loop_time = time()
-    if cv.waitKey(1) == ord('q'):
-       cv.destroyAllWindows()
-       break
-print('Done.')
+        # debug the loop rate
+        print('FPS {}'.format(int(1 / (time() - loop_time))))
+        loop_time = time()
+    else:
+        print('restart_time', (time() - restart_time) / 3600)
