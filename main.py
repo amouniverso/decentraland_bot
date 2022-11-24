@@ -97,19 +97,19 @@ def goto_wondermine(gameScreen):
     pyautogui.scroll(10)
 
 def init_game():
-    # os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
-    # print('app opened.')
-    # sleep(5)
-    # menuScreen = WindowCapture('Decentraland BETA 0.1.44')
-    # click_wallet(menuScreen)
-    # sleep(40)
-    # gameScreen = WindowCapture('Decentraland')
-    # click_profile(gameScreen)
-    # click_graphics(gameScreen)
-    # select_resolution(gameScreen)
-    # set_fps(gameScreen)
+    os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
+    print('app opened.')
+    sleep(5)
+    menuScreen = WindowCapture('Decentraland BETA 0.1.44')
+    click_wallet(menuScreen)
+    sleep(40)
     gameScreen = WindowCapture('Decentraland')
-    # goto_wondermine(gameScreen)
+    click_profile(gameScreen)
+    click_graphics(gameScreen)
+    select_resolution(gameScreen)
+    set_fps(gameScreen)
+    gameScreen = WindowCapture('Decentraland')
+    goto_wondermine(gameScreen)
     print('wondermine initialized.')
     return gameScreen
 
@@ -122,7 +122,7 @@ rest_time = time()
 kill_time = time()
 restart_time = 0
 while True:
-    if (time() - restart_time) > 60 * 60 * 24 and kill_time == 0:
+    if (time() - restart_time) > 60 * 60 * 12 and kill_time == 0:
         wincap = init_game()
         restart_time = 0
         kill_time = time()
