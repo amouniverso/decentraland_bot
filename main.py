@@ -43,9 +43,9 @@ def click_wallet(menuScreen):
     walletX = menuScreen.left + ((menuScreen.right - menuScreen.left) / 3)
     walletY = menuScreen.top + ((menuScreen.bot - menuScreen.top) / 3)
     pyautogui.click(walletX, walletY + 200)
-    sleep(1)
+    sleep(2)
     pyautogui.click(walletX, walletY + 200)
-    sleep(1)
+    sleep(2)
 
 
 def click_profile(gameScreen):
@@ -97,19 +97,19 @@ def goto_wondermine(gameScreen):
     pyautogui.scroll(10)
 
 def init_game():
-    os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
-    print('app opened.')
-    sleep(5)
-    menuScreen = WindowCapture('Decentraland BETA 0.1.44')
-    click_wallet(menuScreen)
-    sleep(40)
+    # os.startfile('C:\\Program Files\\Decentraland\\decentraland.exe')
+    # print('app opened.')
+    # sleep(5)
+    # menuScreen = WindowCapture('Decentraland BETA 0.1.44')
+    # click_wallet(menuScreen)
+    # sleep(40)
+    # gameScreen = WindowCapture('Decentraland')
+    # click_profile(gameScreen)
+    # click_graphics(gameScreen)
+    # select_resolution(gameScreen)
+    # set_fps(gameScreen)
     gameScreen = WindowCapture('Decentraland')
-    click_profile(gameScreen)
-    click_graphics(gameScreen)
-    select_resolution(gameScreen)
-    set_fps(gameScreen)
-    gameScreen = WindowCapture('Decentraland')
-    goto_wondermine(gameScreen)
+    # goto_wondermine(gameScreen)
     print('wondermine initialized.')
     return gameScreen
 
@@ -177,7 +177,10 @@ while True:
                 print('RESET')
                 pyautogui.click()
                 pyautogui.click()
-                move_mouse(1000, random.randrange(-150, 150, 50), 0.5)
+                move_mouse(0, 3000, 0)
+                sleep(0.1)
+                move_mouse(0, -1500, 0)
+                move_mouse(1000, 0, 0)
                 rest_time = time()
 
         # debug the loop rate
