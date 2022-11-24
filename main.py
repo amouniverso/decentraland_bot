@@ -42,7 +42,6 @@ def moveChar():
 def click_wallet(menuScreen):
     walletX = menuScreen.left + ((menuScreen.right - menuScreen.left) / 3)
     walletY = menuScreen.top + ((menuScreen.bot - menuScreen.top) / 3)
-    print(walletX, walletY)
     pyautogui.click(walletX, walletY + 200)
     sleep(1)
     pyautogui.click(walletX, walletY + 200)
@@ -186,3 +185,4 @@ while True:
         loop_time = time()
     else:
         print('restart_time', (time() - restart_time) / 3600)
+        sleep(60)
