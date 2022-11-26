@@ -169,12 +169,14 @@ while True:
             else:
                 pyautogui.keyUp('w')
                 pyautogui.click()
+                sleep(0.1)
                 pyautogui.click()
                 pyautogui.keyDown('s')
         else:
             if time() - rest_time > 1:
                 print('RESET')
                 pyautogui.click()
+                sleep(0.1)
                 pyautogui.click()
                 move_mouse(0, 3000, 0.1)
                 move_mouse(0, -1500, 0.1)
