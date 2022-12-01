@@ -87,7 +87,7 @@ def goto_wondermine(gameScreen):
     pyautogui.moveTo(gameScreen.left + 280, gameScreen.top + 520)
     pyautogui.click()
     sleep(1)
-    pyautogui.moveTo(gameScreen.left + 400, gameScreen.top + 1000)
+    pyautogui.moveTo(gameScreen.left + 400, gameScreen.top + 1050)
     pyautogui.click()
     sleep(40)
     pyautogui.keyDown('w')
@@ -105,13 +105,20 @@ def init_game():
     sleep(60)
     gameScreen = WindowCapture('Decentraland')
     click_profile(gameScreen)
-    click_graphics(gameScreen)
-    select_resolution(gameScreen)
-    set_fps(gameScreen)
-    gameScreen = WindowCapture('Decentraland')
+    # click_graphics(gameScreen)
+    # select_resolution(gameScreen)
+    # set_fps(gameScreen)
+    # gameScreen = WindowCapture('Decentraland')
     goto_wondermine(gameScreen)
+    pyautogui.FAILSAFE = True
     print('wondermine initialized.')
     return gameScreen
+
+
+def restart_app():
+    subprocess.call("TASKKILL /F /IM Decentraland.exe", shell=True)
+    sleep(10)
+    init_game()
 
 
 print('bot started.')
@@ -137,8 +144,13 @@ while True:
         windowCenterY = wincap.h / 2
         windowCenterX = wincap.w / 2
         img, det = detector.detect(wincap.get_screenshot())
-        pyautogui.keyUp('w')
-        pyautogui.keyUp('s')
+        try:
+            pyautogui.keyUp('w')
+            pyautogui.keyUp('s')
+        except:
+            print('EXCEPTION!')
+            pyautogui.FAILSAFE = False
+            restart_app()
 
         dBoxCenterX = None
         dBoxCenterY = None
@@ -169,14 +181,14 @@ while True:
             else:
                 pyautogui.keyUp('w')
                 pyautogui.click()
-                sleep(0.1)
+                sleep(0.5)
                 pyautogui.click()
                 pyautogui.keyDown('s')
         else:
             if time() - rest_time > 1:
                 print('RESET')
                 pyautogui.click()
-                sleep(0.1)
+                sleep(0.5)
                 pyautogui.click()
                 move_mouse(0, 3000, 0.1)
                 move_mouse(0, -1500, 0.1)
